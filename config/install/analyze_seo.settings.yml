@@ -1,0 +1,15 @@
+checks:
+  title_tag: true
+  meta_description: true
+  url_structure: true
+  heading_hierarchy: true
+  image_optimization: true
+  content_length: true
+  link_profile: true
+  canonical_url: true
+  open_graph: true
+  schema_org: true
+  keyword_coherence: true
+  readability: true
+ai_checks_enabled: false
+min_word_count: 300

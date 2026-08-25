@@ -1,0 +1,50 @@
+analyze_seo.settings:
+  type: config_object
+  label: 'SEO settings'
+  mapping:
+    checks:
+      type: mapping
+      label: 'Enabled checks'
+      mapping:
+        title_tag:
+          type: boolean
+          label: 'Title tag quality'
+        meta_description:
+          type: boolean
+          label: 'Meta description quality'
+        url_structure:
+          type: boolean
+          label: 'URL structure'
+        heading_hierarchy:
+          type: boolean
+          label: 'Heading hierarchy'
+        image_optimization:
+          type: boolean
+          label: 'Image optimization'
+        content_length:
+          type: boolean
+          label: 'Content length'
+        link_profile:
+          type: boolean
+          label: 'Link profile'
+        canonical_url:
+          type: boolean
+          label: 'Canonical URL'
+        open_graph:
+          type: boolean
+          label: 'Open Graph tags'
+        schema_org:
+          type: boolean
+          label: 'Schema.org structured data'
+        keyword_coherence:
+          type: boolean
+          label: 'Keyword coherence (AI)'
+        readability:
+          type: boolean
+          label: 'Readability (AI)'
+    ai_checks_enabled:
+      type: boolean
+      label: 'Enable AI-powered checks'
+    min_word_count:
+      type: integer
+      label: 'Minimum word count'

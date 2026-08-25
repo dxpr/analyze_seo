@@ -1,0 +1,10 @@
+analyze_seo.settings:
+  route_name: analyze_seo.settings
+  title: 'Settings'
+  base_route: analyze_seo.settings
+
+analyze_seo.reports:
+  route_name: view.seo_results.page_1
+  title: 'Results'
+  base_route: analyze_seo.settings
+  weight: 20

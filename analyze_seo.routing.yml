@@ -1,0 +1,7 @@
+analyze_seo.settings:
+  path: '/admin/config/analyze/seo'
+  defaults:
+    _form: 'Drupal\analyze_seo\Form\SeoSettingsForm'
+    _title: 'SEO Analysis Settings'
+  requirements:
+    _permission: 'administer analyze settings'

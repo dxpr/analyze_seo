@@ -1,0 +1,111 @@
+<?php
+
+declare(strict_types=1);
+
+/**
+ * @file
+ * Provides traditional SEO analysis for content entities.
+ */
+
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Link;
+use Drupal\Core\Url;
+use Drupal\views\ViewExecutable;
+
+/**
+ * Implements hook_help().
+ */
+function analyze_seo_help($route_name) {
+  if ($route_name === 'help.page.analyze_seo') {
+    return '<p>' . t('Analyses content for SEO: title tags, meta descriptions, heading hierarchy, image alt text, link profile, and optional AI-powered readability checks.') . '</p>';
+  }
+}
+
+/**
+ * Implements hook_entity_update().
+ */
+function analyze_seo_entity_update(EntityInterface $entity): void {
+  if (_analyze_seo_is_supported_entity($entity)) {
+    \Drupal::service('analyze_seo.storage')->deleteScores($entity);
+  }
+}
+
+/**
+ * Implements hook_entity_delete().
+ */
+function analyze_seo_entity_delete(EntityInterface $entity): void {
+  if (_analyze_seo_is_supported_entity($entity)) {
+    \Drupal::service('analyze_seo.storage')->deleteScores($entity);
+  }
+}
+
+/**
+ * Implements hook_views_pre_view().
+ */
+function analyze_seo_views_pre_view(ViewExecutable $view, $display_id, array &$args) {
+  if ($view->id() === 'seo_results' && $display_id === 'page_1') {
+    $current_user = \Drupal::currentUser();
+    if ($current_user->hasPermission('administer analyze settings')) {
+      $settings_url = Url::fromRoute('analyze_seo.settings');
+      if ($settings_url->access()) {
+        $link = Link::fromTextAndUrl(t('Configure settings'), $settings_url);
+        $link = $link->toRenderable();
+        $link['#attributes']['class'][] = 'button';
+        $link['#attributes']['class'][] = 'button--small';
+        $link['#attributes']['class'][] = 'button--primary';
+
+        $view->attachment_before = [
+          '#type' => 'container',
+          '#attributes' => ['class' => ['form-actions', 'views-configure-actions']],
+          '#weight' => -10,
+          'configure_link' => $link,
+          '#attached' => [
+            'library' => ['system/base'],
+          ],
+        ];
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_views_color_scale_popover_alter().
+ */
+function analyze_seo_views_color_scale_popover_alter(array &$content, array $context): void {
+  if ($context['view']->storage->get('base_table') !== 'analyze_seo_scores') {
+    return;
+  }
+  $content = [
+    '#theme' => 'analyze_gauge',
+    '#caption' => $context['field_options']['label'] ?? '',
+    '#range_min_label' => t('Poor'),
+    '#range_mid_label' => t('Fair'),
+    '#range_max_label' => t('Good'),
+    '#range_min' => $context['min'],
+    '#value' => $context['position'],
+    '#display_value' => $context['display_value'],
+    '#range_max' => $context['max'],
+    '#attached' => [
+      'library' => ['analyze/gauge-popover'],
+    ],
+  ];
+}
+
+/**
+ * Checks if an entity type is supported by the SEO analyser.
+ *
+ * @param \Drupal\Core\Entity\EntityInterface $entity
+ *   The entity to check.
+ *
+ * @return bool
+ *   TRUE if supported.
+ */
+function _analyze_seo_is_supported_entity(EntityInterface $entity): bool {
+  $config = \Drupal::config('analyze.settings');
+  $status = $config->get('status') ?? [];
+
+  $entity_type = $entity->getEntityTypeId();
+  $bundle = $entity->bundle();
+
+  return isset($status[$entity_type][$bundle]['analyze_seo_checker']);
+}

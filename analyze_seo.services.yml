@@ -1,0 +1,12 @@
+services:
+  analyze_seo.storage:
+    class: Drupal\analyze_seo\Service\SeoStorageService
+    arguments: ['@database', '@config.factory', '@datetime.time']
+
+  analyze_seo.content_inspector:
+    class: Drupal\analyze_seo\Service\SeoInspectorService
+    arguments: ['@entity_type.manager', '@renderer', '@config.factory', '@request_stack']
+
+  logger.channel.analyze_seo:
+    parent: logger.channel_base
+    arguments: ['analyze_seo']

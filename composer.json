@@ -1,0 +1,19 @@
+{
+  "name": "drupal/analyze_seo",
+  "type": "drupal-module",
+  "description": "Traditional SEO analysis: title tags, meta descriptions, heading hierarchy, image alt text, link profile, and optional AI-powered readability checks.",
+  "keywords": ["Drupal", "Analyze", "SEO", "Search Engine Optimization"],
+  "license": "GPL-2.0-or-later",
+  "homepage": "https://www.drupal.org/project/analyze_seo",
+  "support": {
+    "issues": "https://www.drupal.org/project/issues/analyze_seo",
+    "source": "https://git.drupalcode.org/project/analyze_seo"
+  },
+  "require": {
+    "drupal/analyze": ">=1.3.0",
+    "drupal/views_color_scales": ">=1.1.0"
+  },
+  "suggest": {
+    "drupal/ai": "Enables AI-powered keyword coherence and readability checks."
+  }
+}

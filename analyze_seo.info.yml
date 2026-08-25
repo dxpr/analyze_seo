@@ -1,0 +1,10 @@
+name: 'Analyze SEO'
+type: module
+description: 'Traditional SEO analysis: title tags, meta descriptions, heading hierarchy, image alt text, link profile, and optional AI-powered readability checks.'
+package: Analyze
+core_version_requirement: ^10.3 || ^11
+dependencies:
+  - analyze:analyze (>=1.3.0)
+  - drupal:views
+  - views_color_scales:views_color_scales (>=1.1.0)
+configure: analyze_seo.settings

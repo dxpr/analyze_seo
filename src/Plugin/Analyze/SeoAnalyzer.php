@@ -171,12 +171,18 @@ final class SeoAnalyzer extends AnalyzePluginBase implements BatchableAnalyzerIn
     ];
 
     $score = $results['overall_score'];
+    $check_results = $results['check_results'] ?? [];
+    $grouped = $this->groupChecksByStatus($check_results);
+    $pass_count = count($grouped['pass']);
+    $partial_count = count($grouped['partial']);
+    $fail_count = count($grouped['fail']);
+
     $build['score_summary'] = [
       '#type' => 'container',
-      '#attributes' => ['class' => ['analyze-full-report__score-summary']],
+      '#attributes' => ['class' => ['analyze-full-report__score-summary', 'gin-layer-wrapper']],
     ];
     $build['score_summary']['gauge'] = [
-      '#theme' => 'analyze_gauge',
+      '#theme' => 'analyze_circular_gauge',
       '#caption' => $this->t('SEO Analysis'),
       '#range_min_label' => $this->t('Poor'),
       '#range_mid_label' => $this->t('Fair'),
@@ -194,8 +200,19 @@ final class SeoAnalyzer extends AnalyzePluginBase implements BatchableAnalyzerIn
       '#markup' => $this->getSeoScoreSummaryText($score),
     ];
 
-    $check_results = $results['check_results'] ?? [];
-    $grouped = $this->groupChecksByStatus($check_results);
+    $build['stats'] = [
+      '#type' => 'inline_template',
+      '#template' => '<div class="analyze-full-report__stats"><span class="analyze-full-report__stat analyze-full-report__stat--pass"><span class="analyze-full-report__stat-dot"></span>{{ pass }} {{ pass_label }}</span><span class="analyze-full-report__stat analyze-full-report__stat--partial"><span class="analyze-full-report__stat-dot"></span>{{ partial }} {{ partial_label }}</span><span class="analyze-full-report__stat analyze-full-report__stat--fail"><span class="analyze-full-report__stat-dot"></span>{{ fail }} {{ fail_label }}</span></div>',
+      '#context' => [
+        'pass' => $pass_count,
+        'pass_label' => (string) $this->t('passed'),
+        'partial' => $partial_count,
+        'partial_label' => (string) $this->t('to improve'),
+        'fail' => $fail_count,
+        'fail_label' => (string) $this->t('to fix'),
+      ],
+      '#weight' => 5,
+    ];
 
     $weight = 10;
     if (!empty($grouped['fail'])) {
@@ -369,20 +386,11 @@ final class SeoAnalyzer extends AnalyzePluginBase implements BatchableAnalyzerIn
         '#attributes' => ['class' => ['analyze-check__diagnosis']],
       ];
     }
-    elseif ($status === 'pass') {
-      $item['diagnosis'] = [
-        '#type' => 'html_tag',
-        '#tag' => 'div',
-        '#value' => $this->t('All checks passed.'),
-        '#attributes' => ['class' => ['analyze-check__diagnosis']],
-      ];
-    }
-
     if ($status !== 'pass' && isset(self::CHECK_WHY[$check_id])) {
       $item['why'] = [
         '#type' => 'html_tag',
         '#tag' => 'div',
-        '#value' => $this->t('Why this matters: @reason', ['@reason' => self::CHECK_WHY[$check_id]]),
+        '#value' => self::CHECK_WHY[$check_id],
         '#attributes' => ['class' => ['analyze-check__why']],
       ];
     }

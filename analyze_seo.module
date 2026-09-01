@@ -45,7 +45,7 @@ function analyze_seo_entity_delete(EntityInterface $entity): void {
 function analyze_seo_views_pre_view(ViewExecutable $view, $display_id, array &$args) {
   if ($view->id() === 'seo_results' && $display_id === 'page_1') {
     $current_user = \Drupal::currentUser();
-    if ($current_user->hasPermission('administer analyze settings')) {
+    if ($current_user->hasPermission('administer analyze')) {
       $settings_url = Url::fromRoute('analyze_seo.settings');
       if ($settings_url->access()) {
         $link = Link::fromTextAndUrl(t('Configure settings'), $settings_url);

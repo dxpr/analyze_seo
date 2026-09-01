@@ -4,4 +4,4 @@ analyze_seo.settings:
     _form: 'Drupal\analyze_seo\Form\SeoSettingsForm'
     _title: 'SEO Analysis Settings'
   requirements:
-    _permission: 'administer analyze settings'
+    _permission: 'administer analyze'

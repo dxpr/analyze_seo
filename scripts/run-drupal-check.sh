@@ -37,7 +37,8 @@ if [ ! -L "web/modules/contrib/analyze_seo" ]; then
 fi
 
 # Install the module dependencies for PHPStan analysis
-composer require 'drupal/analyze:^1.3' 'drupal/views_color_scales:^1.1' --no-interaction
+# drupal/ai is optional at runtime, but the AI code paths need its classes for analysis.
+composer require 'drupal/analyze:^1.3' 'drupal/views_color_scales:^1.1' 'drupal/ai:^1.5' --no-interaction
 
 # Install PHPStan extensions for Drupal 11 and Drush for command analysis
 composer require --dev phpstan/phpstan mglaman/phpstan-drupal phpstan/phpstan-deprecation-rules drush/drush --with-all-dependencies --no-interaction

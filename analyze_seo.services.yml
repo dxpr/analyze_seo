@@ -1,7 +1,7 @@
 services:
   analyze_seo.storage:
     class: Drupal\analyze_seo\Service\SeoStorageService
-    arguments: ['@database', '@config.factory', '@datetime.time']
+    arguments: ['@database', '@datetime.time']
 
   analyze_seo.content_inspector:
     class: Drupal\analyze_seo\Service\SeoInspectorService

@@ -745,7 +745,11 @@ EOT;
       }
 
       $messages = new ChatInput([new ChatMessage('user', $prompt)]);
-      $response = $provider->chat($messages, $defaults['model_id'])->getNormalized();
+      // ProviderProxy has no declared chat(); PHPStan cannot resolve it.
+      // __call() is the same dispatch, so events and exception mapping stay.
+      $response = $provider
+        ->__call('chat', [$messages, $defaults['model_id']])
+        ->getNormalized();
 
       $decoded = $this->promptJsonDecoder->decode($response);
       if (!is_array($decoded)) {

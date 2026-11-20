@@ -29,6 +29,11 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   description = @Translation("Checks content for traditional SEO factors: title tags, meta descriptions, headings, images, links, and structured data.")
  * )
  */
+#[\Drupal\analyze\Attribute\Analyze(
+  id: "analyze_seo_checker",
+  label: new TranslatableMarkup("SEO Analysis"),
+  description: new TranslatableMarkup("Checks content for traditional SEO factors: title tags, meta descriptions, headings, images, links, and structured data."),
+)]
 final class SeoAnalyzer extends AnalyzePluginBase implements BatchableAnalyzerInterface {
 
   /**

@@ -14,6 +14,9 @@ services:
   Drupal\analyze_seo\Hook\AnalyzeSeoHooks:
     class: Drupal\analyze_seo\Hook\AnalyzeSeoHooks
     autowire: true
+    arguments:
+      - '@analyze_seo.storage'
+      - '@current_user'
 
   Drupal\analyze_seo\Hook\AnalyzeSeoViewsHooks:
     class: Drupal\analyze_seo\Hook\AnalyzeSeoViewsHooks

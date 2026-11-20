@@ -639,7 +639,20 @@ final class SeoInspectorService {
     }
     $details['schemas_found'] = $types;
 
-    $content_types = ['Article', 'BlogPosting', 'NewsArticle', 'HowTo', 'Product', 'Recipe', 'Review', 'Report', 'TechArticle', 'ScholarlyArticle', 'WebPage', 'FAQPage'];
+    $content_types = [
+      'Article',
+      'BlogPosting',
+      'NewsArticle',
+      'HowTo',
+      'Product',
+      'Recipe',
+      'Review',
+      'Report',
+      'TechArticle',
+      'ScholarlyArticle',
+      'WebPage',
+      'FAQPage',
+    ];
     $has_content_type = FALSE;
     foreach ($types as $type) {
       $flat_types = is_array($type) ? $type : [$type];

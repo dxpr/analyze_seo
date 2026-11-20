@@ -2,6 +2,7 @@
 
 /**
  * @file
+ * Installation and update hooks for Analyze SEO.
  */
 
 declare(strict_types=1);

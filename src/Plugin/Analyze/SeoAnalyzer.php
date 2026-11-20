@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\analyze_seo\Plugin\Analyze;
 
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\ai\AiProviderPluginManager;
 use Drupal\ai\Exception\AiRateLimitException;
 use Drupal\ai\OperationType\Chat\ChatInput;
@@ -304,7 +305,7 @@ final class SeoAnalyzer extends AnalyzePluginBase implements BatchableAnalyzerIn
    * @return array<string, mixed>
    *   Render array.
    */
-  private function buildCheckSection(string|\Drupal\Core\StringTranslation\TranslatableMarkup $title, array $checks, string $status, bool $open): array {
+  private function buildCheckSection(string|TranslatableMarkup $title, array $checks, string $status, bool $open): array {
     $section = [
       '#type' => 'html_tag',
       '#tag' => 'details',
